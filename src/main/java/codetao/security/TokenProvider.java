@@ -1,4 +1,4 @@
-package codetao.service;
+package codetao.security;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
-public class TokenAuthenticationService {
+public class TokenProvider {
     static final long EXPIRATIONTIME = 1000 * 60 * 60 * 24 * 1; //1 days
     static final String SECRET = "security-jwt";
     static final String HEADER_STRING = "Authorization";

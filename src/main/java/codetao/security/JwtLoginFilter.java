@@ -1,7 +1,6 @@
 package codetao.security;
 
 import codetao.domain.User;
-import codetao.service.TokenAuthenticationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -40,6 +39,6 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
 
     @Override
     protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse res, FilterChain chain, Authentication auth) throws IOException, ServletException {
-        TokenAuthenticationService.addAuthentication(res, auth.getName());
+        TokenProvider.addAuthentication(res, auth.getName());
     }
 }
