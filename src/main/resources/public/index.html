@@ -1,17 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-    <meta charset="UTF-8">
-    <title>首页</title>
-    <script type = "text/javascript" src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+        <meta charset="UTF-8">
+        <title>首页</title>
+        <script type = "text/javascript" src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
         <script type = "text/javascript">
             $(document).ready(function(){
                 var token = sessionStorage.getItem('jwt_token');
+                if(!token){
+                    location.href = '/login.html';
+                }
+                $("#role_list").on('click',function(){
+                    $.ajax({
+                        type: 'GET',
+                        url: '/roles',
+                        contentType: 'application/json;charset=UTF-8',
+                        headers:{
+                            Authorization: token
+                        }
+                    }).then(function(res){
+                        console.log(res);
+                    });
+                });
 
+                $("#user_list").on('click',function(){
+                    $.ajax({
+                        type: 'GET',
+                        url: '/users',
+                        contentType: 'application/json;charset=UTF-8',
+                        headers:{
+                            Authorization: token
+                        }
+                    }).then(function(res){
+                        console.log(res);
+                    });
+                });
             });
         </script>
     </head>
     <body>
+        <a href="javascript:void(0);" id="role_list">角色列表</a>
 
+        <a href="javascript:void(0);" id="user_list">用户列表</a>
     </body>
 </html>
