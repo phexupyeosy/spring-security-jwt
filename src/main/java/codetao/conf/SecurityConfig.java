@@ -5,6 +5,7 @@ import codetao.security.JwtAuthFilter;
 import codetao.security.JwtLoginFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -25,9 +26,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .anyRequest().authenticated()
                 .and()
                 // filter the /login requests
-                .addFilter(new JwtLoginFilter(authenticationManager()))
+                .addFilter(newJwtLoginFilter(authenticationManager()))
                 // filter other requests to check the presence of jwt in header
-                .addFilter(new JwtAuthFilter(authenticationManager()));
+                .addFilter(newJwtAuthFilter(authenticationManager()));
     }
 
     @Override
@@ -38,5 +39,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public JwtLoginFilter newJwtLoginFilter(AuthenticationManager authenticationManager){
+        return new JwtLoginFilter(authenticationManager);
+    }
+
+    @Bean
+    public JwtAuthFilter newJwtAuthFilter(AuthenticationManager authenticationManager){
+        return new JwtAuthFilter(authenticationManager);
     }
 }

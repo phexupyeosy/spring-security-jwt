@@ -26,10 +26,6 @@ public class RoleService {
         return roleDao.findOne(id);
     }
 
-    public void delete(Long id){
-        roleDao.delete(id);
-    }
-
     public void delete(Role entity){
         roleDao.delete(entity);
     }
@@ -37,5 +33,9 @@ public class RoleService {
     public Boolean exists(String name){
         Role role = roleDao.findByName(name);
         return role != null;
+    }
+
+    public List<Role> findByUser(String username){
+        return roleDao.findByUser(username);
     }
 }
