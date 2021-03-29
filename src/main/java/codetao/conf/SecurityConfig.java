@@ -22,7 +22,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
-                //.antMatchers("/users/signup").permitAll()
+                .antMatchers("/ping").permitAll()
+                .antMatchers("/login.html").permitAll()
+                .antMatchers("/index.html").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 // filter the /login requests
