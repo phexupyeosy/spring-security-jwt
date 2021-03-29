@@ -1,4 +1,4 @@
-package codetao.web.filter;
+package codetao.security;
 
 import codetao.domain.User;
 import codetao.service.TokenAuthenticationService;

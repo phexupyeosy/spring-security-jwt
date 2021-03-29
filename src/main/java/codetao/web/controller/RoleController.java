@@ -1,4 +1,4 @@
-package codetao.web.controller.user;
+package codetao.web.controller;
 
 import codetao.domain.Role;
 import codetao.service.RoleService;
