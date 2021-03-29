@@ -30,6 +30,10 @@ public class UserService implements UserDetailsService {
         );
     }
 
+    public User findByUsername(String username){
+        return userDao.findByUsername(username);
+    }
+
     public List<User> findAll() {
         List<User> list = userDao.findAll();
         return list;

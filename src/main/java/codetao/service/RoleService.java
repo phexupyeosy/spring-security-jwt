@@ -35,7 +35,7 @@ public class RoleService {
         return role != null;
     }
 
-    public List<Role> findByUser(String username){
-        return roleDao.findByUser(username);
+    public List<Role> findByUserId(Long userId){
+        return roleDao.findByUserId(userId);
     }
 }
