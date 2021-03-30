@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
@@ -18,7 +19,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 public class JwtAuthFilter extends BasicAuthenticationFilter {
@@ -34,6 +35,7 @@ public class JwtAuthFilter extends BasicAuthenticationFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         String username = TokenProvider.getAuthentication(request);
+        System.out.println("111");
         Authentication authentication = null;
         if(!StringUtils.isEmpty(username)){
             User user = userService.findByUsername(username);
@@ -41,11 +43,12 @@ public class JwtAuthFilter extends BasicAuthenticationFilter {
                 throw new UsernameNotFoundException("user not found by username");
             }
             List<Role> roles = roleService.findByUserId(user.getId());
-
-            System.out.println(user);
-            System.out.println(roles);
-
-            authentication = new UsernamePasswordAuthenticationToken(username, user.getPassword(), Collections.emptyList());
+            List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+            for(Role role : roles){
+                System.out.println("roleName="+role.getName());
+                authorities.add(new SimpleGrantedAuthority(role.getName()));
+            }
+            authentication = new UsernamePasswordAuthenticationToken(username, user.getPassword(), authorities);
         }
         SecurityContextHolder.getContext().setAuthentication(authentication);
         chain.doFilter(request, response);

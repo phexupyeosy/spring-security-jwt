@@ -6,8 +6,7 @@ import codetao.domain.UserRole;
 import codetao.dao.RoleDao;
 import codetao.dao.UserDao;
 import codetao.dao.UserRoleDao;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
@@ -19,10 +18,9 @@ import org.springframework.stereotype.Component;
  * 优先级：1>2
  */
 @Component
+@Slf4j
 @Order(value = 3)
 public class BootStrap implements CommandLineRunner{
-
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private UserDao userDao;
     @Autowired

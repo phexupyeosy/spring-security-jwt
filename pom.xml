@@ -83,6 +83,8 @@
         </dependencies>
         <configuration>
           <mainClass>codetao.App</mainClass>
+          <!-- spring-boot:run 中文乱码解决 -->
+          <jvmArguments>-Dfile.encoding=UTF-8</jvmArguments>
         </configuration>
       </plugin>
     </plugins>
