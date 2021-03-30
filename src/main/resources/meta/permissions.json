@@ -1,0 +1,27 @@
+[
+  {
+    "id": "user",
+    "text": "用户",
+    "children": [{
+        "id": "query",
+        "text": "查询",
+        "method": "GET",
+        "url": "/users"
+      },{
+        "id": "update",
+        "text": "修改",
+        "method": "PUT",
+        "url": "/users/(\\d+)"
+    },{
+      "id": "create",
+      "text": "创建",
+      "method": "POST",
+      "url": "/users"
+    },{
+      "id": "delete",
+      "text": "删除",
+      "method": "DELETE",
+      "url": "/users/(\\d+)"
+    }]
+  }
+]
