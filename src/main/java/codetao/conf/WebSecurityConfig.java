@@ -1,22 +1,18 @@
 package codetao.conf;
 
+import codetao.security.UrlAccessDecisionManager;
 import codetao.service.UserService;
 import codetao.security.JwtAuthFilter;
 import codetao.security.JwtLoginFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.access.AccessDecisionManager;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.InsufficientAuthenticationException;
-import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
@@ -41,20 +37,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                 .antMatchers("/login.html").permitAll()
                 .antMatchers("/index.html").permitAll()
                 .anyRequest().authenticated()
-                .withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>(){
-                    @Override
-                    public <O extends FilterSecurityInterceptor> O postProcess(O fsi) {
-                        fsi.setSecurityMetadataSource(newFilterSecurityInterceptor());
-                        fsi.setAccessDecisionManager(newAccessDecisionManager());
-                        return fsi;
-                    }
-                })
                 .and()
+
                 // filter the /login requests
                 .addFilter(newJwtLoginFilter(authenticationManager()))
-                // filter other requests to check the presence of jwt in header
-                .addFilter(newJwtAuthFilter(authenticationManager()));
 
+                // filter other requests to check the presence of jwt in header
+                .addFilter(newJwtAuthFilter(authenticationManager()))
+
+                // filter request url and method decide
+                .addFilter(newFilterSecurityInterceptor());
     }
 
     @Override
@@ -77,24 +69,29 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
         return new JwtAuthFilter(authenticationManager);
     }
 
+
     @Bean
-    public FilterInvocationSecurityMetadataSource newFilterSecurityInterceptor(){
+    public FilterSecurityInterceptor newFilterSecurityInterceptor(){
+        FilterSecurityInterceptor fsi = new FilterSecurityInterceptor();
+        fsi.setSecurityMetadataSource(newFilterInvocationSecurityMetadataSource());
+        fsi.setAccessDecisionManager(newAccessDecisionManager());
+        return fsi;
+    }
+
+    @Bean
+    public FilterInvocationSecurityMetadataSource newFilterInvocationSecurityMetadataSource(){
         return new FilterInvocationSecurityMetadataSource(){
             @Override
             public Collection<ConfigAttribute> getAttributes(Object o) throws IllegalArgumentException {
-
                 System.out.println("getAttributes");
-
                 Collection<ConfigAttribute> list = new ArrayList<>();
                 list.add(new SecurityConfig("all"));
-
                 return list;
             }
 
             @Override
             public Collection<ConfigAttribute> getAllConfigAttributes() {
-                System.out.println("getAllConfigAttributes");
-                return Collections.emptyList();
+                return null;
             }
 
             @Override
@@ -106,32 +103,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 
     @Bean
     public AccessDecisionManager newAccessDecisionManager(){
-        return new AccessDecisionManager(){
-
-            @Override
-            public void decide(Authentication authentication, Object o, Collection<ConfigAttribute> collection) throws AccessDeniedException, InsufficientAuthenticationException {
-                System.out.println("decide");
-                System.out.println(authentication);
-
-                for(GrantedAuthority authoritie : authentication.getAuthorities()){
-                    System.out.println(authoritie.getAuthority());
-                }
-
-                System.out.println(authentication.getAuthorities());
-
-                System.out.println(o);
-                System.out.println(collection);
-            }
-
-            @Override
-            public boolean supports(ConfigAttribute configAttribute) {
-                return true;
-            }
-
-            @Override
-            public boolean supports(Class<?> aClass) {
-                return true;
-            }
-        };
+        return new UrlAccessDecisionManager();
     }
 }

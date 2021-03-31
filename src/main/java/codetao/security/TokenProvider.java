@@ -2,6 +2,7 @@ package codetao.security;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,15 +25,18 @@ public class TokenProvider {
 
     public static String getAuthentication(HttpServletRequest req){
         String token = req.getHeader(HEADER_STRING);
-        if(token != null){
-            // parse the token
-            String username = Jwts.parser()
-                    .setSigningKey(SECRET)
-                    .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
-                    .getBody()
-                    .getSubject();
-            return username;
+        if(StringUtils.isEmpty(token)){
+            return null;
         }
-        return null;
+
+        System.out.println("token="+token);
+
+        // parse the token
+        String username = Jwts.parser()
+                .setSigningKey(SECRET)
+                .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
+                .getBody()
+                .getSubject();
+        return username;
     }
 }

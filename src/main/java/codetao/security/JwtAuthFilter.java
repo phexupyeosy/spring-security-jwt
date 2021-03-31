@@ -35,7 +35,6 @@ public class JwtAuthFilter extends BasicAuthenticationFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         String username = TokenProvider.getAuthentication(request);
-        System.out.println("111");
         Authentication authentication = null;
         if(!StringUtils.isEmpty(username)){
             User user = userService.findByUsername(username);
@@ -45,7 +44,6 @@ public class JwtAuthFilter extends BasicAuthenticationFilter {
             List<Role> roles = roleService.findByUserId(user.getId());
             List<SimpleGrantedAuthority> authorities = new ArrayList<>();
             for(Role role : roles){
-                System.out.println("roleName="+role.getName());
                 authorities.add(new SimpleGrantedAuthority(role.getName()));
             }
             authentication = new UsernamePasswordAuthenticationToken(username, user.getPassword(), authorities);
