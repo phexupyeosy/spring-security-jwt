@@ -44,7 +44,7 @@ public class JwtAuthFilter extends BasicAuthenticationFilter {
             List<Role> roles = roleService.findByUserId(user.getId());
             List<SimpleGrantedAuthority> authorities = new ArrayList<>();
             for(Role role : roles){
-                authorities.add(new SimpleGrantedAuthority(role.getName()));
+                authorities.add(new SimpleGrantedAuthority(role.getId().toString()));
             }
             authentication = new UsernamePasswordAuthenticationToken(username, user.getPassword(), authorities);
         }

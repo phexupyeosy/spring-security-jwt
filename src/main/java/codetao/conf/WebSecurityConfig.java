@@ -21,8 +21,6 @@ import org.springframework.security.access.SecurityConfig;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
@@ -38,13 +36,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                 .antMatchers("/index.html").permitAll()
                 .anyRequest().authenticated()
                 .and()
-
                 // filter the /login requests
                 .addFilter(newJwtLoginFilter(authenticationManager()))
-
                 // filter other requests to check the presence of jwt in header
                 .addFilter(newJwtAuthFilter(authenticationManager()))
-
                 // filter request url and method decide
                 .addFilter(newFilterSecurityInterceptor());
     }
@@ -81,9 +76,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
     @Bean
     public FilterInvocationSecurityMetadataSource newFilterInvocationSecurityMetadataSource(){
         return new FilterInvocationSecurityMetadataSource(){
+            /**
+             * 此方法可用来校验客户端请求的url是否在权限表中
+             * 如果存在返回结果给AccessDecisionManager.decide()方法决策是否由此权限，如果不存在则放行
+             *
+             *
+             * 注：因不想每次请求都要去匹配权限表中是否包含请求的url，所以此处不管任何请求url都拦截，然后通过decide方法中做决策。
+             */
             @Override
             public Collection<ConfigAttribute> getAttributes(Object o) throws IllegalArgumentException {
-                System.out.println("getAttributes");
                 Collection<ConfigAttribute> list = new ArrayList<>();
                 list.add(new SecurityConfig("all"));
                 return list;

@@ -1,14 +1,25 @@
 package codetao.security;
 
+import codetao.domain.RolePermission;
+import codetao.service.RolePermissionService;
+import codetao.service.RoleService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.web.FilterInvocation;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class UrlAccessDecisionManager implements AccessDecisionManager {
+    @Autowired
+    private RolePermissionService rolePermissionService;
 
     /**
      * 判断url是否拥有权限的决策方法
@@ -19,12 +30,20 @@ public class UrlAccessDecisionManager implements AccessDecisionManager {
     @Override
     public void decide(Authentication authentication, Object obj, Collection<ConfigAttribute> configAttributes) throws AccessDeniedException, InsufficientAuthenticationException {
         System.out.println(">>>>>decide<<<<<");
-        System.out.println(authentication.getPrincipal());
-        System.out.println(authentication.getCredentials());
-        System.out.println(authentication.getAuthorities());
-        System.out.println(authentication.getPrincipal());
-        System.out.println(obj);
-        System.out.println(configAttributes);
+        HttpServletRequest request = ((FilterInvocation)obj).getHttpRequest();
+        System.out.println("requestURI="+request.getRequestURI());
+        System.out.println("method="+request.getMethod());
+
+        List<Long> roleIds = new ArrayList<>();
+        for(GrantedAuthority authority : authentication.getAuthorities()){
+            roleIds.add(Long.parseLong(authority.getAuthority()));
+        }
+        if(roleIds.size() > 0){
+            List<RolePermission> rps = rolePermissionService.findAllByRoleIds(roleIds);
+            for(RolePermission rp : rps){
+
+            }
+        }
     }
 
     @Override
