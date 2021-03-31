@@ -10,7 +10,7 @@ import java.util.Date;
 
 public class TokenProvider {
     static final long EXPIRATIONTIME = 1000 * 60 * 60 * 24 * 1; //1 days
-    static final String SECRET = "security-jwt";
+    static final String SECRET = "spring-security-jwt";
     static final String HEADER_STRING = "Authorization";
     static final String TOKEN_PREFIX = "Bearer";
 
@@ -28,9 +28,6 @@ public class TokenProvider {
         if(StringUtils.isEmpty(token)){
             return null;
         }
-
-        System.out.println("token="+token);
-
         // parse the token
         String username = Jwts.parser()
                 .setSigningKey(SECRET)

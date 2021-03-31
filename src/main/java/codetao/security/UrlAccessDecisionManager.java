@@ -18,7 +18,13 @@ public class UrlAccessDecisionManager implements AccessDecisionManager {
      */
     @Override
     public void decide(Authentication authentication, Object obj, Collection<ConfigAttribute> configAttributes) throws AccessDeniedException, InsufficientAuthenticationException {
-        System.out.println("decide");
+        System.out.println(">>>>>decide<<<<<");
+        System.out.println(authentication.getPrincipal());
+        System.out.println(authentication.getCredentials());
+        System.out.println(authentication.getAuthorities());
+        System.out.println(authentication.getPrincipal());
+        System.out.println(obj);
+        System.out.println(configAttributes);
     }
 
     @Override
