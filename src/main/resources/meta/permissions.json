@@ -1,13 +1,25 @@
-{
-  // 公共访问操作
-  "public": [],
-
-  // 登录之后可以操作
-  "login": [],
-
-  // 所属角色可以操作
-  "role": [],
-
-  // 拥有者可以操作
-  "owner": []
-}
+[{
+  "id": "user",
+  "text": "用户",
+  "children": [{
+    "id": "read",
+    "text": "查看, 过滤, 搜索",
+    "urls": ["GET:/users","GET:/users/(\\d+)"]
+  },{
+    "id": "write",
+    "text": "创建, 修改, 删除",
+    "url": ["POST:/users","PUT:/users/(\\d+)","DELETE:/users/(\\d+)"]
+  }]
+},{
+  "id": "role",
+  "text": "角色",
+  "children":[{
+    "id": "read",
+    "text": "查看, 过滤, 搜索",
+    "urls": ["GET:/roles","GET:/roles/(\\d+)"]
+  },{
+    "id": "write",
+    "text": "创建, 修改, 删除",
+    "url": ["POST:/roles","PUT:/roles/(\\d+)","DELETE:/roles/(\\d+)"]
+  }]
+}]
