@@ -4,19 +4,19 @@
   "children": [{
     "id": "read",
     "text": "查看, 过滤, 搜索",
-    "urls": "GET:^/api/users(/\\w+)+"
+    "url": "GET:^/api/users(/\\w+)*"
   },{
     "id": "write",
     "text": "创建, 修改, 删除",
-    "urls": ["POST:^/api/users","PUT:^/api/users/(\\d+)","DELETE:^/api/users/(\\d+)"]
+    "url": "POST:^/api/users,PUT:^/api/users/(\\d+),DELETE:^/api/users/(\\d+)"
   },{
     "id": "user_role_read",
     "text": "查看用户角色",
-    "urls": ["GET:^/users/(\\d+)/roles"]
+    "url": "GET:^/api/users/(\\d+)/roles"
   },{
     "id": "user_role_write",
     "text": "修改用户角色",
-    "urls": ["PUT:^/users/(\\d+)/roles"]
+    "url": "PUT:^/api/users/(\\d+)/roles"
   }]
 },{
   "id": "role",
@@ -24,18 +24,18 @@
   "children":[{
     "id": "read",
     "text": "查看, 过滤, 搜索",
-    "urls": ["GET:^/roles(/\\w+)+"]
+    "url": ["GET:^/api/roles(/\\w+)*"]
   },{
     "id": "write",
     "text": "创建, 修改, 删除",
-    "urls": ["POST:^/roles","PUT:^/roles/(\\d+)","DELETE:^/roles/(\\d+)"]
+    "url": "POST:^/api/roles,PUT:^/api/roles/(\\d+),DELETE:^/api/roles/(\\d+)"
   },{
     "id": "role_permission_read",
     "text": "查看角色权限",
-    "urls": ["GET:^/roles/(\\d+)/permissions"]
+    "url": "GET:^/api/roles/(\\d+)/permissions"
   },{
     "id": "role_permission_write",
     "text": "修改角色权限",
-    "urls": ["PUT:^/roles/(\\d+)/permissions"]
+    "url": "PUT:^/api/roles/(\\d+)/permissions"
   }]
 }]

@@ -12,6 +12,7 @@ import java.util.Map;
 
 @Service
 public class PermissionService {
+
     @Value(value="classpath:/meta/permissions.json")
     private Resource resource;
 

@@ -4,6 +4,7 @@ import codetao.domain.Role;
 import codetao.domain.User;
 import codetao.service.RoleService;
 import codetao.service.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,6 +29,8 @@ public class JwtAuthFilter extends BasicAuthenticationFilter {
     @Autowired
     private RoleService roleService;
 
+    private ObjectMapper om = new ObjectMapper();
+
     public JwtAuthFilter(AuthenticationManager authenticationManager) {
         super(authenticationManager);
     }
@@ -39,12 +42,12 @@ public class JwtAuthFilter extends BasicAuthenticationFilter {
         if(!StringUtils.isEmpty(username)){
             User user = userService.findByUsername(username);
             if(user == null){
-                throw new UsernameNotFoundException("user not found by username");
+                throw new UsernameNotFoundException("username not found");
             }
             List<Role> roles = roleService.findByUserId(user.getId());
             List<SimpleGrantedAuthority> authorities = new ArrayList<>();
             for(Role role : roles){
-                authorities.add(new SimpleGrantedAuthority(role.getId().toString()));
+                authorities.add(new SimpleGrantedAuthority(om.writeValueAsString(role)));
             }
             authentication = new UsernamePasswordAuthenticationToken(username, user.getPassword(), authorities);
         }

@@ -10,6 +10,9 @@ import javax.persistence.*;
 @Entity
 @Table(name = "t_role")
 public class Role {
+    public final static String CODE_ADMIN = "admin";
+    public final static String CODE_USER = "user";
+
     @Id
     @GeneratedValue
     @Getter
@@ -18,7 +21,7 @@ public class Role {
 
     @Getter
     @Setter
-    private String code = "user";
+    private String code = CODE_USER;
 
     @Getter
     @Setter

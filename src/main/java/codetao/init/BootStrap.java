@@ -40,10 +40,10 @@ public class BootStrap implements CommandLineRunner{
             userDao.save(user);
         }
 
-        Role role = roleDao.findByCode("admin");
+        Role role = roleDao.findByCode(Role.CODE_ADMIN);
         if(role == null){
             role = new Role();
-            role.setCode("admin");
+            role.setCode(Role.CODE_ADMIN);
             role.setName("管理员");
             roleDao.save(role);
         }
@@ -55,7 +55,6 @@ public class BootStrap implements CommandLineRunner{
             userRole.setRoleId(role.getId());
             userRoleDao.save(userRole);
         }
-
         log.info(">>>>>>>>>>>>>>> BootStrap end <<<<<<<<<<<<<");
     }
 
