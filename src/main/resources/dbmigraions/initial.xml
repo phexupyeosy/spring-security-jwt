@@ -54,9 +54,7 @@
             <column name="role_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
-            <column name="relation" type="varchar(10)"/>
-            <column name="method" type="varchar(10)"/>
-            <column name="url" type="varchar(255)"/>
+            <column name="api" type="varchar(255)"/>
         </createTable>
     </changeSet>
 </databaseChangeLog>

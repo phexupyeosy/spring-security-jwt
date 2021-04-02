@@ -10,11 +10,10 @@ import java.util.List;
 @Repository
 public interface RoleDao extends JpaRepository<Role, Long>{
 
+    Role findByCode(String code);
+
     @Query(nativeQuery=true, value = "select * from t_role where code <> 'admin'")
     List<Role> findAll();
-
-    @Query(nativeQuery=true, value = "select * from t_role where code <> 'admin' and code = ?1")
-    Role findByCode(String code);
 
     @Query(nativeQuery=true, value = "select * from t_role where code <> 'admin' and name = ?1")
     Role findByName(String name);

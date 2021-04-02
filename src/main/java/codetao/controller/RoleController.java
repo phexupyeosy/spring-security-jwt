@@ -1,4 +1,4 @@
-package codetao.web.controller;
+package codetao.controller;
 
 import codetao.domain.Role;
 import codetao.service.PermissionService;

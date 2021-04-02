@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class UrlAccessDecisionManager implements AccessDecisionManager {
     @Autowired
@@ -35,7 +34,6 @@ public class UrlAccessDecisionManager implements AccessDecisionManager {
      */
     @Override
     public void decide(Authentication authentication, Object obj, Collection<ConfigAttribute> configAttributes) throws AccessDeniedException, InsufficientAuthenticationException {
-        System.out.println(">>>>>decide<<<<<");
         HttpServletRequest request = ((FilterInvocation)obj).getHttpRequest();
         List<Role> roles = new ArrayList<>();
         try{
@@ -50,18 +48,16 @@ public class UrlAccessDecisionManager implements AccessDecisionManager {
             List<Long> roleIds = new ArrayList<>();
             for(Role role : roles){
                 roleIds.add(role.getId());
-                /*
                 if(role.getCode().equals(Role.CODE_ADMIN)){
                     return;
                 }
-                */
             }
             List<RolePermission> permissions = rolePermissionService.findAllByRoleIds(roleIds);
             for(RolePermission p : permissions){
-                String[]  urlList= p.getUrl().split(",");
-                for(String ulStr : urlList){
-                    String[] ulList = ulStr.split(":");
-                    if(ulList.length == 2 && new RegexRequestMatcher(ulList[1], ulList[0]).matches(request)){
+                String[] strs = p.getApi().split(",");
+                for(String str : strs){
+                    String[] apis = str.split(":");
+                    if(apis.length == 2 && new RegexRequestMatcher(apis[1], apis[0]).matches(request)){
                         return;
                     }
                 }

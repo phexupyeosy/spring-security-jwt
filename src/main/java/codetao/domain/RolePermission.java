@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="t_role_permission")
+@Table(name="t_role_api")
 public class RolePermission {
     @Id
     @GeneratedValue
@@ -23,13 +23,5 @@ public class RolePermission {
 
     @Getter
     @Setter
-    private String relation;  //用来标记该权限是属于私人的，还是角色的，用于OwnerPolicy检测
-
-    @Getter
-    @Setter
-    private String method;   //对应资源的操作方式，只能是GET、POST、PUT、DELETE中的其中一个
-
-    @Getter
-    @Setter
-    private String url;     //对应资源的操作url
+    private String api;     //对应资源的操作url，例如：GET:/api/<resources>/<id>
 }

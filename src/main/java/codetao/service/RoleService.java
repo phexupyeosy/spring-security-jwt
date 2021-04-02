@@ -3,7 +3,6 @@ package codetao.service;
 import codetao.dao.RolePermissionDao;
 import codetao.domain.Role;
 import codetao.dao.RoleDao;
-import codetao.domain.RolePermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
