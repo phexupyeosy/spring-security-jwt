@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="t_role_api")
+@Table(name="t_role_permission")
 public class RolePermission {
     @Id
     @GeneratedValue

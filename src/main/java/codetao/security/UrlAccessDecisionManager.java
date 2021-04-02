@@ -48,9 +48,11 @@ public class UrlAccessDecisionManager implements AccessDecisionManager {
             List<Long> roleIds = new ArrayList<>();
             for(Role role : roles){
                 roleIds.add(role.getId());
+                /*
                 if(role.getCode().equals(Role.CODE_ADMIN)){
                     return;
                 }
+                */
             }
             List<RolePermission> permissions = rolePermissionService.findAllByRoleIds(roleIds);
             for(RolePermission p : permissions){

@@ -30,7 +30,7 @@ public class BootStrap implements CommandLineRunner{
 
     @Override
     public void run(String... args) throws Exception {
-        log.info(">>>>>>>>>>>>>>> BootStrap begin <<<<<<<<<<<<<");
+        log.info("BootStrap begin");
 
         User user = userDao.findByUsername("demo");
         if(user == null){
@@ -55,7 +55,7 @@ public class BootStrap implements CommandLineRunner{
             userRole.setRoleId(role.getId());
             userRoleDao.save(userRole);
         }
-        log.info(">>>>>>>>>>>>>>> BootStrap end <<<<<<<<<<<<<");
+        log.info("BootStrap end");
     }
 
 }
