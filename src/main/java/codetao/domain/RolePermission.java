@@ -23,5 +23,5 @@ public class RolePermission {
 
     @Getter
     @Setter
-    private String api;     //对应资源的操作url，例如：GET:/api/<resources>/<id>
+    private String permission;     //权限，例如：user.read,role.read
 }

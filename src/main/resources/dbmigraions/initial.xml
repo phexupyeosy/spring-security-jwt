@@ -54,7 +54,7 @@
             <column name="role_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
-            <column name="api" type="varchar(255)"/>
+            <column name="permission" type="varchar(255)"/>
         </createTable>
     </changeSet>
 </databaseChangeLog>

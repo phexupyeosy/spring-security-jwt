@@ -11,7 +11,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.util.StringUtils;
 
@@ -41,15 +40,15 @@ public class JwtAuthFilter extends BasicAuthenticationFilter {
         Authentication authentication = null;
         if(!StringUtils.isEmpty(username)){
             User user = userService.findByUsername(username);
-            if(user == null){
-                throw new UsernameNotFoundException("username not found");
+            if(user != null){
+                List<Role> roles = roleService.findByUserId(user.getId());
+
+                List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+                for(Role role : roles){
+                    authorities.add(new SimpleGrantedAuthority(om.writeValueAsString(role)));
+                }
+                authentication = new UsernamePasswordAuthenticationToken(username, user.getPassword(), authorities);
             }
-            List<Role> roles = roleService.findByUserId(user.getId());
-            List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-            for(Role role : roles){
-                authorities.add(new SimpleGrantedAuthority(om.writeValueAsString(role)));
-            }
-            authentication = new UsernamePasswordAuthenticationToken(username, user.getPassword(), authorities);
         }
         SecurityContextHolder.getContext().setAuthentication(authentication);
         chain.doFilter(request, response);

@@ -2,6 +2,7 @@ package codetao.security;
 
 import codetao.domain.Role;
 import codetao.domain.RolePermission;
+import codetao.service.PermissionService;
 import codetao.service.RolePermissionService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +17,14 @@ import org.springframework.security.web.util.matcher.RegexRequestMatcher;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 public class UrlAccessDecisionManager implements AccessDecisionManager {
     @Autowired
     private RolePermissionService rolePermissionService;
+
+    @Autowired
+    private PermissionService permissionService;
 
     private ObjectMapper om = new ObjectMapper();
 
@@ -35,26 +37,31 @@ public class UrlAccessDecisionManager implements AccessDecisionManager {
     @Override
     public void decide(Authentication authentication, Object obj, Collection<ConfigAttribute> configAttributes) throws AccessDeniedException, InsufficientAuthenticationException {
         HttpServletRequest request = ((FilterInvocation)obj).getHttpRequest();
-        List<Role> roles = new ArrayList<>();
+        List<Long> roleIds = new ArrayList<>();
         try{
             for(GrantedAuthority authority : authentication.getAuthorities()){
                 Role role = om.readValue(authority.getAuthority(), Role.class);
-                roles.add(role);
+                roleIds.add(role.getId());
             }
         }catch (IOException e){
             e.printStackTrace();
         }
-        if(roles.size() > 0){
-            List<Long> roleIds = new ArrayList<>();
-            for(Role role : roles){
-                roleIds.add(role.getId());
-                /*
-                if(role.getCode().equals(Role.CODE_ADMIN)){
-                    return;
-                }
-                */
-            }
+
+        if(roleIds.size() > 0){
             List<RolePermission> permissions = rolePermissionService.findAllByRoleIds(roleIds);
+            for(RolePermission rp : permissions){
+                System.out.println(rp);
+            }
+            List<?> apis = permissionService.getApiPermissions();
+            Iterator<?> ite = apis.iterator();
+            while(ite.hasNext()){
+                Map map = (Map)ite.next();
+                System.out.println(map.get("api"));
+                System.out.println(map.get("method"));
+                System.out.println(map.get("permissionKey"));
+            }
+
+            /**
             for(RolePermission p : permissions){
                 String[] strs = p.getApi().split(",");
                 for(String str : strs){
@@ -64,7 +71,9 @@ public class UrlAccessDecisionManager implements AccessDecisionManager {
                     }
                 }
             }
+            */
         }
+
         throw new AccessDeniedException("access denied");
     }
 
