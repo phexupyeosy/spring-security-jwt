@@ -1,0 +1,22 @@
+[
+  {
+    "api": "^/api/users(/\\w+)*",
+    "method": "GET",
+    "permissionKey": "user.read"
+  },
+  {
+    "api": "^/api/users(/\\d)*",
+    "method": "POST,PUT,DELETE",
+    "permissionKey": "user.write"
+  },
+  {
+    "api": "^/api/roles(/\\w+)*",
+    "method": "GET",
+    "permissionKey": "role.read"
+  },
+  {
+    "api": "^/api/roles(/\\d)*",
+    "method": "POST,PUT,DELETE",
+    "permissionKey": "role.write"
+  }
+]

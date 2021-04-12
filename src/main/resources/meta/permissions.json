@@ -1,41 +1,25 @@
 [{
   "id": "user",
-  "text": "用户",
+  "text": "用户管理",
   "children": [{
     "id": "read",
     "text": "查看, 过滤, 搜索",
-    "api": "GET:^/api/users(/\\w+)*"
+    "children": []
   },{
     "id": "write",
     "text": "创建, 修改, 删除",
-    "api": "POST:^/api/users,PUT:^/api/users/(\\d+),DELETE:^/api/users/(\\d+)"
-  },{
-    "id": "user_role_read",
-    "text": "查看用户角色",
-    "api": "GET:^/api/users/(\\d+)/roles"
-  },{
-    "id": "user_role_write",
-    "text": "修改用户角色",
-    "api": "PUT:^/api/users/(\\d+)/roles"
+    "children": []
   }]
 },{
   "id": "role",
-  "text": "角色",
+  "text": "角色管理",
   "children":[{
     "id": "read",
     "text": "查看, 过滤, 搜索",
-    "api": ["GET:^/api/roles(/\\w+)*"]
+    "children": []
   },{
     "id": "write",
     "text": "创建, 修改, 删除",
-    "api": "POST:^/api/roles,PUT:^/api/roles/(\\d+),DELETE:^/api/roles/(\\d+)"
-  },{
-    "id": "role_permission_read",
-    "text": "查看角色权限",
-    "api": "GET:^/api/roles/(\\d+)/permissions"
-  },{
-    "id": "role_permission_write",
-    "text": "修改角色权限",
-    "api": "PUT:^/api/roles/(\\d+)/permissions"
+    "children": []
   }]
 }]
