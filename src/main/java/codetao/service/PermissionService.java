@@ -8,25 +8,43 @@ import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class PermissionService {
 
     @Value(value="classpath:/meta/permissions.json")
-    private Resource resource;
+    private Resource trees;
 
-    public List<Map<String, Object>> getPermissions(){
-        try(BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()))){
+    @Value(value="classpath:/meta/api_permissions.json")
+    private Resource apis;
+
+    public List getPermissions(){
+        try(BufferedReader reader = new BufferedReader(new InputStreamReader(trees.getInputStream()))){
             StringBuffer message = new StringBuffer();
-            String line = null;
+            String line;
             while((line = reader.readLine()) != null){
                 message.append(line);
             }
             String jsonStr = message.toString();
             ObjectMapper mapper = new ObjectMapper();
-            List<Map<String, Object>> permissions = mapper.readValue(jsonStr, List.class);
+            List permissions = mapper.readValue(jsonStr, List.class);
             return permissions;
+        }catch (Exception e){
+
+        }
+        return null;
+    }
+
+    public List getApiPermissions(){
+        try(BufferedReader reader = new BufferedReader(new InputStreamReader(apis.getInputStream()))){
+            StringBuffer message = new StringBuffer();
+            String line;
+            while((line = reader.readLine()) != null){
+                message.append(line);
+            }
+            String jsonStr = message.toString();
+            List apis = new ObjectMapper().readValue(jsonStr, List.class);
+            return apis;
         }catch (Exception e){
 
         }
