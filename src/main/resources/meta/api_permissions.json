@@ -1,22 +1,17 @@
-[
-  {
-    "api": "^/api/users(/\\w+)*",
-    "method": "GET",
-    "permissionKey": "user.read"
-  },
-  {
-    "api": "^/api/users(/\\d)*",
-    "method": "POST,PUT,DELETE",
-    "permissionKey": "user.write"
-  },
-  {
-    "api": "^/api/roles(/\\w+)*",
-    "method": "GET",
-    "permissionKey": "role.read"
-  },
-  {
-    "api": "^/api/roles(/\\d)*",
-    "method": "POST,PUT,DELETE",
-    "permissionKey": "role.write"
-  }
-]
+[{
+  "api": "^/api/users(/\\w+)*",
+  "method": "GET",
+  "permission": "user.read"
+},{
+  "api": "^/api/users(/\\d)*",
+  "method": "POST,PUT,DELETE",
+  "permission": "user.write"
+},{
+  "api": "^/api/roles(/\\w+)*",
+  "method": "GET",
+  "permission": "role.read"
+},{
+  "api": "^/api/roles(/\\d)*",
+  "method": "POST,PUT,DELETE",
+  "permission": "role.write"
+}]

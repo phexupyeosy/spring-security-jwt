@@ -1,5 +1,6 @@
 package codetao.service;
 
+import codetao.cache.MetaCache;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -13,41 +14,49 @@ import java.util.List;
 public class PermissionService {
 
     @Value(value="classpath:/meta/permissions.json")
-    private Resource trees;
+    private Resource permissionsFile;
 
     @Value(value="classpath:/meta/api_permissions.json")
-    private Resource apis;
+    private Resource apiPermissionsFile;
 
     public List getPermissions(){
-        try(BufferedReader reader = new BufferedReader(new InputStreamReader(trees.getInputStream()))){
-            StringBuffer message = new StringBuffer();
-            String line;
-            while((line = reader.readLine()) != null){
-                message.append(line);
-            }
-            String jsonStr = message.toString();
-            ObjectMapper mapper = new ObjectMapper();
-            List permissions = mapper.readValue(jsonStr, List.class);
-            return permissions;
-        }catch (Exception e){
+        List permissions = (List)MetaCache.getMetaCache("permissions");
+        if(permissions == null){
+            try(BufferedReader reader = new BufferedReader(new InputStreamReader(permissionsFile.getInputStream()))){
+                StringBuffer message = new StringBuffer();
+                String line;
+                while((line = reader.readLine()) != null){
+                    message.append(line);
+                }
+                String jsonStr = message.toString();
+                ObjectMapper mapper = new ObjectMapper();
+                permissions = mapper.readValue(jsonStr, List.class);
+                MetaCache.setMetaCache("permissions", permissions);
+            }catch (Exception e){
 
+            }
         }
-        return null;
+        return permissions;
     }
 
     public List getApiPermissions(){
-        try(BufferedReader reader = new BufferedReader(new InputStreamReader(apis.getInputStream()))){
-            StringBuffer message = new StringBuffer();
-            String line;
-            while((line = reader.readLine()) != null){
-                message.append(line);
-            }
-            String jsonStr = message.toString();
-            List apis = new ObjectMapper().readValue(jsonStr, List.class);
-            return apis;
-        }catch (Exception e){
+        List apiPermissions = (List)MetaCache.getMetaCache("api_permissions");
+        if(apiPermissions == null){
+            try(BufferedReader reader = new BufferedReader(new InputStreamReader(apiPermissionsFile.getInputStream()))){
+                StringBuffer message = new StringBuffer();
+                String line;
+                while((line = reader.readLine()) != null){
+                    message.append(line);
+                }
+                String jsonStr = message.toString();
+                apiPermissions = new ObjectMapper().readValue(jsonStr, List.class);
+                MetaCache.setMetaCache("api_permissions", apiPermissions);
+            }catch (Exception e){
 
+            }
         }
-        return null;
+        return apiPermissions;
     }
+
+    
 }

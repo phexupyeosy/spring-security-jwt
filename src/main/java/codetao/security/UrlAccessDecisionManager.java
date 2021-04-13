@@ -18,6 +18,7 @@ import org.springframework.security.web.util.matcher.RegexRequestMatcher;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class UrlAccessDecisionManager implements AccessDecisionManager {
     @Autowired
@@ -46,34 +47,18 @@ public class UrlAccessDecisionManager implements AccessDecisionManager {
         }catch (IOException e){
             e.printStackTrace();
         }
-
         if(roleIds.size() > 0){
-            List<RolePermission> permissions = rolePermissionService.findAllByRoleIds(roleIds);
-            for(RolePermission rp : permissions){
-                System.out.println(rp);
-            }
-            List<?> apis = permissionService.getApiPermissions();
-            Iterator<?> ite = apis.iterator();
-            while(ite.hasNext()){
-                Map map = (Map)ite.next();
-                System.out.println(map.get("api"));
-                System.out.println(map.get("method"));
-                System.out.println(map.get("permissionKey"));
-            }
-
-            /**
-            for(RolePermission p : permissions){
-                String[] strs = p.getApi().split(",");
-                for(String str : strs){
-                    String[] apis = str.split(":");
-                    if(apis.length == 2 && new RegexRequestMatcher(apis[1], apis[0]).matches(request)){
+            List<Map<String, String>> apiPermissions = permissionService.getApiPermissions();
+            List<RolePermission> rolePermissions = rolePermissionService.findAllByRoleIds(roleIds);
+            for(RolePermission rp : rolePermissions){
+                apiPermissions = apiPermissions.stream().filter(api-> rp.getPermission().equals(api.get("permission")) && api.get("method").contains(request.getMethod())).collect(Collectors.toList());
+                for(Map<String, String> permissionMeta : apiPermissions){
+                    if(new RegexRequestMatcher(permissionMeta.get("api"), request.getMethod()).matches(request)){
                         return;
                     }
                 }
             }
-            */
         }
-
         throw new AccessDeniedException("access denied");
     }
 
