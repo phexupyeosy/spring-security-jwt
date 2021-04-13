@@ -10,7 +10,7 @@ spring:
     active: dev
   output:
     ansi:
-      enabled: ALWAYS
+      enabled: always
 ---
 # 开发配置
 server:
