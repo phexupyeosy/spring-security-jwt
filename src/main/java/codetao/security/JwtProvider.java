@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
-public class TokenProvider {
+public class JwtProvider {
     static final long EXPIRATIONTIME = 1000 * 60 * 60 * 24 * 1; //1 days
     static final String SECRET = "spring-security-jwt";
     static final String HEADER_STRING = "Authorization";

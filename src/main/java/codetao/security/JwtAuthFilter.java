@@ -36,7 +36,7 @@ public class JwtAuthFilter extends BasicAuthenticationFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        String username = TokenProvider.getAuthentication(request);
+        String username = JwtProvider.getAuthentication(request);
         Authentication authentication = null;
         if(!StringUtils.isEmpty(username)){
             User user = userService.findByUsername(username);

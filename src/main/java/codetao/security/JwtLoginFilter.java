@@ -39,6 +39,6 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
 
     @Override
     protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse res, FilterChain chain, Authentication auth) throws IOException, ServletException {
-        TokenProvider.addAuthentication(res, auth.getName());
+        JwtProvider.addAuthentication(res, auth.getName());
     }
 }
