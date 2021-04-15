@@ -42,7 +42,6 @@ public class JwtAuthFilter extends BasicAuthenticationFilter {
             User user = userService.findByUsername(username);
             if(user != null){
                 List<Role> roles = roleService.findByUserId(user.getId());
-
                 List<SimpleGrantedAuthority> authorities = new ArrayList<>();
                 for(Role role : roles){
                     authorities.add(new SimpleGrantedAuthority(om.writeValueAsString(role)));

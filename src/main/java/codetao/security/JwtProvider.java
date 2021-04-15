@@ -17,7 +17,7 @@ public class JwtProvider {
     public static void addAuthentication(HttpServletResponse res, String username){
         String jwtStr = Jwts.builder()
                 .setSubject(username)
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATIONTIME))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60))
                 .signWith(SignatureAlgorithm.HS512, SECRET)
                 .compact();
         res.addHeader(HEADER_STRING, TOKEN_PREFIX + " " + jwtStr);

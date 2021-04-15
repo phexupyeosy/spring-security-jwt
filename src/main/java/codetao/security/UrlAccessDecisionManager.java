@@ -37,6 +37,7 @@ public class UrlAccessDecisionManager implements AccessDecisionManager {
      */
     @Override
     public void decide(Authentication authentication, Object obj, Collection<ConfigAttribute> configAttributes) throws AccessDeniedException, InsufficientAuthenticationException {
+        System.out.println("decide");
         HttpServletRequest request = ((FilterInvocation)obj).getHttpRequest();
         List<Long> roleIds = new ArrayList<>();
         try{
